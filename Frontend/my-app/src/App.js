@@ -15,6 +15,8 @@ import ParcelList from './components/ParcelList';
 import TrackParcel from './components/TrackPracel';
 import UpdateStatus from './components/UpdateStatus';
 import TrackParcelCustomer from './components/TrackParcelCustomer';
+import AddBranch from './components/AddBranch';
+import BranchList from './components/BranchList';
 
 function App() {
   return (
@@ -37,6 +39,8 @@ function App() {
             <Route path="/track" component={TrackParcel} />
             <Route path="/parcel/edit/:id" component={UpdateStatus}/>
             <Route path="/trackparcel" component={TrackParcelCustomer}/>
+            <Route path="/addbranch" component={AddBranch}/>
+            <Route path="/branchlist" component={BranchList}/>
           </Switch>
         </div>
       </div>

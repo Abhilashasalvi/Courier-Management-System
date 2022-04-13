@@ -22,7 +22,6 @@ public class Parcel {
 	private long ref_no;
 	@Column(length=20)
 	@NotEmpty(message ="Name can't be blank")
-	@Length(min = 4,max=20,message = "Invalid Name length min=4 and max=20!!!!")
 	private String recipient_name;
 	@Column
 	@NotEmpty(message ="address can't be blank")
@@ -36,9 +35,8 @@ public class Parcel {
 	@NotEmpty(message ="destination_pincode can't be blank")
 	@Pattern(regexp="(^$|[0-9]{6})")
 	private String destination_pincode;
-	@Column(length=20)
-	@NotEmpty(message ="branch can't be blank")
-	private String branch;
+	@Column
+	private int branch_id;
 	@Column
 	@NotEmpty(message ="source can't be blank")
 	private String source;
@@ -85,7 +83,7 @@ public class Parcel {
 			String recipient_mobile,
 			 String source_pincode,
 			 String destination_pincode,
-			 String branch,
+			 int branch_id,
 			String source,
 			String destination, int weight, short distance,
 			double price, String status, LocalDateTime datecreated,
@@ -97,7 +95,7 @@ public class Parcel {
 		this.recipient_mobile = recipient_mobile;
 		this.source_pincode = source_pincode;
 		this.destination_pincode = destination_pincode;
-		this.branch = branch;
+		this.branch_id = branch_id;
 		this.source = source;
 		this.destination = destination;
 		this.weight = weight;
@@ -209,16 +207,16 @@ public class Parcel {
 
 
 
-	public String getBranch() {
-		return branch;
+	public int getBranch() {
+		return branch_id;
 	}
 
 
 
 
 
-	public void setBranch(String branch) {
-		this.branch = branch;
+	public void setBranch(int branch_id) {
+		this.branch_id = branch_id;
 	}
 
 

@@ -36,6 +36,8 @@ const[parcel_status,setStatus]=useState('Accepted');
 const[source_pincode,setSourcePincode]=useState('');
 const[destination_pincode,setDestinationPincode]=useState('');
 
+const[AddBranch,setAddBranch]=useState([]);
+
 
 const[ref_no,setRef_no]=useState('');
 //const[customer_id,setcustomer_id]=useState('');
@@ -90,7 +92,9 @@ const courierCharge=0;
     let pincodeRGEX=/^$|[0-9]{6}/;
     let pincodeResult=pincodeRGEX.test(source_pincode);
     let pincodeDestination=pincodeRGEX.test(destination_pincode);
-    
+    const num = /^[0-9\b]+$/;
+
+
     //let sourceResult=nameRGEX.test(source);
    // let destinationResult=nameRGEX.test(destination);
    /* if(phoneResult == false)
@@ -122,6 +126,18 @@ const courierCharge=0;
     else if(pincodeDestination==false)
     {
         alert('Invalid destination pincode');
+    }
+    else if(!(num.test(weight)))
+    {
+        alert('Invalid weight');
+    }
+    else if(!(num.test(distance)))
+    {
+        alert('Invalid distance');
+    }
+    else if(!(num.test(price)))
+    {
+        alert('Invalid price');
     }
     
     
@@ -194,7 +210,9 @@ else{
             //alert("Please fill all fields properly");
            console.log("error");
         }
-    })
+    }).catch(error => {
+        console.log('Something went wrong', error);
+      }) 
 
     
 
@@ -205,6 +223,21 @@ else{
 }
    
     
+  }
+
+
+
+  const getBranchDetails=()=>{
+
+    axios.get('http://localhost:9090/api/branch').then((response)=>{
+        const result = response.data
+        console.log(result)
+        setAddBranch(result)
+    }).catch(error => {
+        console.log('Something went wrong', error);
+    }) 
+
+
   }
     
 
@@ -237,6 +270,9 @@ else{
                 console.log('Something went wrong', error);
             })
     }
+
+
+    getBranchDetails();
 
 // empty dependency array means this effect will only run once (like componentDidMount in classes)
 }, []);
@@ -408,20 +444,20 @@ else{
                 <br></br>
 
                 <div class="form-row">
-                     <div class="col">
-                        <label>Branch</label>
-                        <input type="text"
-                         class="form-control" 
-                         id="branch"
-                         value={branch}
-                         onChange={(e) => setBranch(e.target.value)}
-                         placeholder="Enter branch"
-                         required
-                         />
-                     </div>
+                    
 
                      <div class="col">
-                        
+                     <label>Branch</label>
+                     <select class="form-control" aria-label="Default select example"  id="branch" value={branch}  onChange={(e) => setBranch(e.target.value)} >
+                        <option selected>-select-</option>
+
+                        {AddBranch.map((addbranch, index) =>
+                                <option 
+                                key={index}
+                                value= {addbranch.id}
+                                > {addbranch.branch_name} </option>
+                              )}
+                    </select>
                      </div>
                 </div>
                 <br></br>

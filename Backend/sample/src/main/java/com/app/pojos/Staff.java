@@ -2,6 +2,7 @@ package com.app.pojos;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -35,7 +36,7 @@ public class Staff {
 	@Column
 	private String mobile;
 	@Column
-	private LocalDate joinDate;
+	private LocalDateTime joinDate=LocalDateTime.now();
 	
 	public Staff()
 	{
@@ -43,14 +44,14 @@ public class Staff {
 	}
 
 	public Staff(Integer id, String name, String type, String email,
-			String branch, LocalDate joinDate,String mobile) {
+			String branch, LocalDateTime joinDate,String mobile) {
 		super();
 		this.id = id;
 		Name = name;
 		this.type = type;
 		this.email = email;
 		this.branch = branch;
-		this.joinDate = joinDate;
+		this.joinDate = LocalDateTime.now();
 		this.mobile=mobile;
 	}
 
@@ -96,11 +97,11 @@ public class Staff {
 		this.branch = branch;
 	}
 
-	public LocalDate getJoinDate() {
+	public LocalDateTime getJoinDate() {
 		return joinDate;
 	}
 
-	public void setJoinDate(LocalDate joinDate) {
+	public void setJoinDate(LocalDateTime joinDate) {
 		this.joinDate = joinDate;
 	}
 

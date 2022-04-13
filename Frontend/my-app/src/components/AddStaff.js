@@ -7,7 +7,7 @@ import staffService from "../services/staff.service";
 import NavBar from './NavBar';
 import {Redirect} from "react-router-dom"
 import validator from 'validator';
-
+import axios from "axios"
 import './style.css';
 import TopBar from './TopBar';
 
@@ -18,26 +18,26 @@ const AddStaff = () => {
     const[branch,setBranch]=useState('');
     const[email, setEmail] = useState('');
     const[type, setType] = useState('');
-    const[joinDate, setjoinDate] = useState('');
+    //const[joinDate, setjoinDate] = useState('');
     const[mobile, setMobile] = useState('');
     const history = useHistory();
     const {id} = useParams();
 
     
-
+    const[AddBranch,setAddBranch]=useState([]);
 
    
     const saveStaff = (e) => {
         e.preventDefault();
         
-        const staff = {name,branch,email,mobile,type,joinDate, id};
+        const staff = {name,branch,email,mobile,type, id};
 
         const regexExp = /^[6-9]\d{9}$/gi;
         const mobileResult=regexExp.test(staff.mobile);
         let nameRGEX=/^[A-Za-z ]{3,30}$/;
         let nameResult=nameRGEX.test(staff.name);
         if(staff.name.length===0 || staff.branch.length===0 || staff.email.length===0 ||
-            staff.mobile.length===0 || staff.type.length===0 || staff.joinDate.length===0)
+            staff.mobile.length===0 || staff.type.length===0)
             {
                 alert("All fields are mandatory");
             }
@@ -98,17 +98,31 @@ const AddStaff = () => {
                     setBranch(staff.data.branch);
                     setEmail(staff.data.email);
                     setType(staff.data.type);
-                    setjoinDate(staff.data.joinDate);
+                  //  setjoinDate(staff.data.joinDate);
                    setMobile(staff.data.mobile);
                 })
                 .catch(error => {
                     console.log('Something went wrong', error);
                 })
         }
+
+        getBranchDetails();
     }, [])
    
    
+    const getBranchDetails=()=>{
 
+        axios.get('http://localhost:9090/api/branch').then((response)=>{
+            const result = response.data
+            console.log(result)
+            setAddBranch(result)
+        }).catch(error => {
+            console.log('Something went wrong', error);
+        }) 
+    
+    
+      }
+        
     
    
    
@@ -153,13 +167,17 @@ const AddStaff = () => {
                      </div>
 
                      <div class="col">
-                        <label>Branch</label>
-                        <input type="text"
-                         class="form-control" 
-                         id="branch"
-                         value={branch}
-                         onChange={(e) => setBranch(e.target.value)}
-                         placeholder="Enter Branch"/>
+                     <label>Branch</label>
+                     <select class="form-control" aria-label="Default select example"  id="branch" value={branch}  onChange={(e) => setBranch(e.target.value)} >
+                        <option selected>-select-</option>
+
+                        {AddBranch.map((addbranch, index) =>
+                                <option 
+                                key={index}
+                                value= {addbranch.branch_name}
+                                > {addbranch.branch_name} </option>
+                              )}
+                    </select>
                      </div>
                 </div>
                 <br></br>
@@ -190,15 +208,7 @@ const AddStaff = () => {
                 
 
                 <div class="form-row">
-                     <div class="col">
-                        <label>Join Date</label>
-                        <input type="Date" 
-                        class="form-control" 
-                        id="joinDate"
-                        value={joinDate}
-                        onChange={(e) => setjoinDate(e.target.value)} 
-                        placeholder="Enter joining Date"/>
-                     </div>
+                     
                      <div class="col">
                         <label>Contact No</label>
                         <input type="text"
